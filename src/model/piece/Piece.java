@@ -1,6 +1,7 @@
-package model;
+package model.piece;
 
-import java.awt.*;
+import model.Position;
+
 import java.awt.Color;
 
 public class Piece {
@@ -9,7 +10,7 @@ public class Piece {
 
     private Position position;
 
-    private PieceStrategy strategy;
+    private Strategy strategy;
 
     private Integer points ;
 
@@ -21,8 +22,7 @@ public class Piece {
     {
         return this.color;
     }
-    public Integer getPoints()
-    {
+    public Integer getPoints() throws Exception {
         return strategy.getPoints();
     }
     public Character getLetter()
