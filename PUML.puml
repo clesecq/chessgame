@@ -15,11 +15,15 @@ package "model" {
     enum Color {
         WHITE
         BLACK
+        - colorFrench : String {readOnly}
+        Color(colorFrench : String)
+        +getColorFrench()
+
     }
 
     class Position {
-        - x: Integer
-        - y: Integer
+        - x: Integer {readOnly}
+        - y: Integer {readOnly}
         + Position(x: Integer, y: Integer)
         + move(oldPosition: Position, newPosition: Position)
         + getPiece() : Piece
@@ -33,6 +37,9 @@ package "model" {
 
     package "piece" {
         class Piece {
+            -points : Integer
+            -letter : String
+            + Piece()
             + getColor() : Color
             + getPoints() : Integer
             + getLetter() : String
@@ -41,7 +48,7 @@ package "model" {
         }
         Piece *-- "1" Strategy : <<contains>>
         Piece *-- "1" Color : <<contains>>
-        Piece *- "0..*" MovementObserver : <<contains>>
+        Piece o-> "0..*" MovementObserver : <<observe>>
 
 
         interface Strategy <<interface>> {
@@ -51,24 +58,46 @@ package "model" {
             + canCastling() : Boolean
         }
 
-        class King implements Strategy
-        class Queen implements Strategy
+        class King implements Strategy{
+            +getPoints() : Integer
+            +getLetter() : String
+            +getMovements() : Position[]
+        }
+        class Queen implements Strategy{
+            +getPoints() : Integer
+            +getLetter() : String
+            +getMovements() : Position[]
+        }
         class Rook implements Strategy {
+            +getPoints() : Integer
+            +getLetter() : String
+            +getMovements() : Position[]
             - castling : Boolean
         }
-        class Bishop implements Strategy
+        class Bishop implements Strategy{
+            +getPoints() : Integer
+            +getLetter() : String
+            +getMovements() : Position[]
+        }
         class Knight implements Strategy {
+            +getPoints() : Integer
+            +getLetter() : String
+            +getMovements() : Position[]
             - castling : Boolean
         }
-        class Pawn implements Strategy
+        class Pawn implements Strategy{
+            +getPoints() : Integer
+            +getLetter() : String
+            +getMovements() : Position[]
+        }
 
         class Factory {
-            + createKing(color: Color) : King
-            + createQueen(color: Color) : Queen
-            + createRook(color: Color) : Rook
-            + createBishop(color: Color) : Bishop
-            + createKnight(color: Color) : Knight
-            + createPawn(color: Color) : Pawn
+            + createKing(color: Color) : Piece
+            + createQueen(color: Color) : Piece
+            + createRook(color: Color) : Piece
+            + createBishop(color: Color) : Piece
+            + createKnight(color: Color) : Piece
+            + createPawn(color: Color) : Piece
         }
 
         King <.. Factory : <<use>>
@@ -88,7 +117,7 @@ package "model" {
     Chessboard ..> Factory : <<use>>
 
 
-    Position ..> Piece : <<use>>
+    Position "0.1"--o "1" Piece : <<contains>>
 }
 
 
@@ -114,6 +143,7 @@ package "controller" {
 
     class Player {
         - color : Color
+        +Player(color: Color)
         + playTurn()
     }
 
@@ -121,7 +151,7 @@ package "controller" {
         + update(old: Position, new: Position)
     }
 
-    Player ..> Color : <<use>>
+    Player "1" --* "1"Color : <<use>>
 }
 
 ChessboardView ..> Chessboard : <<use>>
