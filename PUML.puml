@@ -1,0 +1,129 @@
+
+@startuml chess
+' https://plantuml.com/class-diagram
+
+skinparam style strictuml
+skinparam ClassAttributeIconSize 0
+skinparam ClassFontStyle bold
+
+' constructeur à ajouter
+' mouvement des pièces !!!
+' aggrécation/composition -> nom des attributs
+' type primaire exclusivement comeme attribut
+
+package "model" {
+    enum Color {
+        WHITE
+        BLACK
+    }
+
+    class Position {
+        - x: Integer
+        - y: Integer
+        + Position(x: Integer, y: Integer)
+        + move(oldPosition: Position, newPosition: Position)
+        + getPiece() : Piece
+    }
+
+    class Chessboard {
+        - Chessboard()
+   }
+    Chessboard *-- "64..64" Position : <<contains>>
+    Chessboard *-- "0..22" Piece : <<contains>>
+
+    package "piece" {
+        class Piece {
+            + getColor() : Color
+            + getPoints() : Integer
+            + getLetter() : String
+            + setStrategy(strategy: Strategy)
+            + getMovements(currentPosition: Position) : Position[]
+        }
+        Piece *-- "1" Strategy : <<contains>>
+        Piece *-- "1" Color : <<contains>>
+        Piece *- "0..*" MovementObserver : <<contains>>
+
+
+        interface Strategy <<interface>> {
+            + getPoints() : Integer
+            + getLetter() : String
+            + getMovements() : Position[]
+            + canCastling() : Boolean
+        }
+
+        class King implements Strategy
+        class Queen implements Strategy
+        class Rook implements Strategy {
+            - castling : Boolean
+        }
+        class Bishop implements Strategy
+        class Knight implements Strategy {
+            - castling : Boolean
+        }
+        class Pawn implements Strategy
+
+        class Factory {
+            + createKing(color: Color) : King
+            + createQueen(color: Color) : Queen
+            + createRook(color: Color) : Rook
+            + createBishop(color: Color) : Bishop
+            + createKnight(color: Color) : Knight
+            + createPawn(color: Color) : Pawn
+        }
+
+        King <.. Factory : <<use>>
+        Queen <.. Factory : <<use>>
+        Rook <.. Factory : <<use>>
+        Bishop <.. Factory : <<use>>
+        Knight <.. Factory : <<use>>
+        Pawn <.. Factory : <<use>>
+
+        Factory .> Piece : <<create>>
+    }
+
+    interface MovementObserver <<interface>> {
+        + update(old: Position, new: Position)
+    }
+
+    Chessboard ..> Factory : <<use>>
+
+
+    Position ..> Piece : <<use>>
+}
+
+
+package "view" {
+    class ChessboardView {
+        - chessboard : Chessboard
+        - ChessboardView()
+        + getInstance() : ChessboardView
+        + draw()
+        - case[]
+    }
+
+    class PieceObserver implements MovementObserver {
+        + update(old: Position, new: Position)
+    }
+}
+
+package "controller" {
+    class ChessMain() {
+        + {static} main()
+    }
+    Player "2" --> "1" ChessboardView : <<contains>>
+
+    class Player {
+        - color : Color
+        + playTurn()
+    }
+
+    class CheckObserver implements MovementObserver {
+        + update(old: Position, new: Position)
+    }
+
+    Player ..> Color : <<use>>
+}
+
+ChessboardView ..> Chessboard : <<use>>
+
+@enduml

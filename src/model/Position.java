@@ -1,8 +1,8 @@
 package model;
 
 public class Position {
-    private Integer x;
-    private Integer y;
+    private final Integer x;
+    private final Integer y;
 
     public Position(Integer x, Integer y){
         this.x = x;
