@@ -36,24 +36,30 @@ public class Party {
     }
 
     public void clickOnCase(int x, int y) {
-        if (x < 0 || x > 7 || y < 0 || y > 7) {
+        if (x < 0 || x > 7 || y < 0 || y > 7)
             throw new IllegalArgumentException("Invalid position");
-        }
 
         Position position = chessboard.getBoard()[x][y];
+        
         if (position.getPiece() != null && position.getPiece().getColor() == currentPlayer) {
-            if (selectedPosition != null) {
-                view.resetColor(selectedPosition);
-                for (Position p : selectedPosition.getPiece().getMovements(selectedPosition)) {
+            for (Position[] row : chessboard.getBoard())
+                for (Position p : row)
+                    view.resetColor(p);
+
+            view.setColor(position, Color.GRAY);
+
+            int row = selectedPosition.getRow();
+            int column = selectedPosition.getColumn();
+
+            for (int[] coordinates : selectedPosition.getPiece().getMovements(row, column)) {
+                Position p = chessboard.getBoard()[coordinates[0]][coordinates[1]];
+                
+                if (p != null) {
+                    view.setColor(p, Color.GREEN);
                     view.resetColor(p);
                 }
             }
 
-            view.setColor(position, Color.GRAY);
-            for (Position p : position.getPiece().getMovements(position)) {
-                if (p != null)
-                    view.setColor(p, Color.GREEN);
-            }
             selectedPosition = position;
         }
     }

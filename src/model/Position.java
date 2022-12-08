@@ -36,10 +36,4 @@ public class Position {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
-
-    public void move(Chessboard board, Position newPosition) {
-        for (MoveObserver observer : observer) {
-            observer.onMove(this, newPosition);
-        }
-    }
 }

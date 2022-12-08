@@ -2,13 +2,7 @@ package model.piece;
 
 import model.Position;
 
-public class King implements Strategy {
-    private final Position[][] board;
-
-    public King(Position[][] board) {
-        this.board = board;
-    }
-
+public class KingStrategy implements PieceStrategy {
     @Override
     public Character getLetter() {
         return 'K';
@@ -19,9 +13,9 @@ public class King implements Strategy {
          throw new Exception("Le roi ne peut mourir");
     }
 
-
     @Override
-    public Position[] getMovements(Position currentPosition) {
-        return new Position[] { board[0][0] };
+    public int[][] getMovements(int x, int y) {
+        return new int[0][]; // TODO
     }
+
 }
