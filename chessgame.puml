@@ -25,12 +25,21 @@ package "model" {
         - x: Integer {readOnly}
         - y: Integer {readOnly}
         + Position(x: Integer, y: Integer)
-        + move(oldPosition: Position, newPosition: Position)
+        + getPosition() : Integer[]
+        + getRow() : Integer
+        + getColumn()
         + getPiece() : Piece
+        + setPiece(piece : Piece)
     }
+    Position --* MoveObserver : <<use>>
+    Position  --* "1" Piece : <<contains>>
 
     class Chessboard {
+        - board : Position[]
+        - capturedPiece : Piece[]
         + Chessboard()
+        + addCapturedPiece( piece : Piece)
+        + getBoard() : Position[]
    }
     Chessboard *-- "64..64" Position : <<contains>>
     Chessboard *-- "0..22" Piece : <<contains>>
@@ -48,7 +57,7 @@ package "model" {
         }
         Piece *-- "1" Strategy : <<contains>>
         Piece *-- "1" Color : <<contains>>
-        Piece o- "0..*" MovementObserver : <<observe>>
+        Piece o- "0..*" MoveObserver : <<observe>>
 
 
         interface Strategy <<interface>> {
@@ -110,29 +119,37 @@ package "model" {
         Factory .> Piece : <<create>>
     }
 
-    interface MovementObserver <<interface>> {
-        + update(old: Position, new: Position)
+    interface MoveObserver <<interface>> {
+        + onMove(oldposition : Position, newposition : Position)
     }
 
     Chessboard ..> Factory : <<use>>
+    class MoveObserver implements MoveObserver{
+            + onMove(oldposition : Position, newposition : Position)
+    }
+    class CaptureObserver implements MoveObserver{
+            +CaptureObserver(chessboard : Chessboard)
+             + onMove(oldposition : Position, newposition : Position)
+    }
+    CaptureObserver --* Chessboard : <<contains>>
 
-
-    Position "0.1" o--* "1" Piece : <<contains>>
 }
 
 
 package "view" {
-    class ChessboardView {
-        - chessboard : Chessboard
-        - ChessboardView()
+    class ChessboardView extends JFrame {
+        + ChessboardView(party : Party)
+        - createLabel( x : Integer, y : Integer ) : Jlabel
+        + drawPosition( position : Position)
+        + resetColor ( position : Position)
+        - resetColor (label : Jlabel, x : Integer, y : Integer)
+        + setColor ( position : Position, color : java.awt.Color)
         + getInstance() : ChessboardView
-        + draw()
-        - case[]
-    }
+        - positionToIndex ( position : Position) : Integer
+        - indexToLabel (index : Integer) : Jlabel
+        - getLabel ( position : Position) : Jlabel
+        }
 
-    class PieceObserver implements MovementObserver {
-        + update(old: Position, new: Position)
-    }
 }
 
 package "controller" {
@@ -146,12 +163,22 @@ package "controller" {
         +Player(color: Color)
         + playTurn()
     }
+        Player "1" --* "1"Color : <<use>>
 
-    class CheckObserver implements MovementObserver {
+    class CheckObserver implements MoveObserver {
         + update(old: Position, new: Position)
     }
+    class Party {
+    +Party()
+    +getCurrentPlayer() : Color
+    +ClikOnCase(x : Integer, y : Integer)
 
-    Player "1" --* "1"Color : <<use>>
+    }
+
+    Party --* "1" Chessboard: <<contains>>
+    Party --* ChessboardView : <<use>>
+    Party --* "2"Color : <<contains>>
+    Party --* Position : <<use>>
 }
 
 ChessboardView ..> Chessboard : <<use>>
