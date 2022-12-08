@@ -1,11 +1,18 @@
 package model.piece;
 
+import model.Color;
 import model.Position;
 
 public class Pawn implements Strategy {
 
-    private Integer points = 1;
-    private Character letter ;
+    private final Position[][] board;
+    private final Color color;
+
+
+    public Pawn(Position[][] board, Color color) {
+        this.board = board;
+        this.color = color;
+    }
 
     @Override
     public Character getLetter() {
@@ -18,7 +25,7 @@ public class Pawn implements Strategy {
     }
 
     @Override
-    public Position[] getMovements() {
-        return new Position[0];
+    public Position[] getMovements(Position currentPosition) {
+        return new Position[] { board[0][0] };
     }
 }
