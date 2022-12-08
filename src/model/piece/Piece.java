@@ -1,8 +1,6 @@
 package model.piece;
 
-import model.Position;
-
-import java.awt.Color;
+import model.*;
 
 public class Piece {
 
@@ -16,7 +14,9 @@ public class Piece {
 
     private Character letter ;
 
-    public Piece(){}
+    public Piece(Color color){
+        this.color = color;
+    }
 
     public Color getColor()
     {
@@ -35,7 +35,12 @@ public class Piece {
     }
     public Position[] getMovements(Position currentPosition)
     {
-        return strategy.getMovements();
+        return strategy.getMovements(currentPosition);
+    }
+
+    public void setStrategy(Strategy strategy)
+    {
+        this.strategy = strategy;
     }
 
 }

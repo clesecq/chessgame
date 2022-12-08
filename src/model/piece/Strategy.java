@@ -1,11 +1,11 @@
 package model.piece;
 
-import model.Position;
+import model.*;
 
 public interface Strategy {
 
    Character getLetter();
 
    Integer getPoints() throws Exception;
-   Position[] getMovements();
+   Position[] getMovements(Position currentPosition);
 }
