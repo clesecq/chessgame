@@ -30,7 +30,7 @@ package "model" {
     }
 
     class Chessboard {
-        - Chessboard()
+        + Chessboard()
    }
     Chessboard *-- "64..64" Position : <<contains>>
     Chessboard *-- "0..22" Piece : <<contains>>
@@ -48,7 +48,7 @@ package "model" {
         }
         Piece *-- "1" Strategy : <<contains>>
         Piece *-- "1" Color : <<contains>>
-        Piece o-> "0..*" MovementObserver : <<observe>>
+        Piece o- "0..*" MovementObserver : <<observe>>
 
 
         interface Strategy <<interface>> {
@@ -117,7 +117,7 @@ package "model" {
     Chessboard ..> Factory : <<use>>
 
 
-    Position "0.1"--o "1" Piece : <<contains>>
+    Position "0.1" o--* "1" Piece : <<contains>>
 }
 
 
