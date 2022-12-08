@@ -8,7 +8,7 @@ public class Piece {
 
     private Position position;
 
-    private Strategy strategy;
+    private PieceStrategy pieceStrategy;
 
     private Integer points ;
 
@@ -23,24 +23,21 @@ public class Piece {
         return this.color;
     }
     public Integer getPoints() throws Exception {
-        return strategy.getPoints();
+        return pieceStrategy.getPoints();
     }
     public Character getLetter()
     {
-        return strategy.getLetter();
-    }
-    public void move(Position oldPosition, Position newPosition)
-    {
-       this.position = newPosition;
-    }
-    public Position[] getMovements(Position currentPosition)
-    {
-        return strategy.getMovements(currentPosition);
+        return pieceStrategy.getLetter();
     }
 
-    public void setStrategy(Strategy strategy)
+    public int[][] getMovements(int x, int y)
     {
-        this.strategy = strategy;
+        return pieceStrategy.getMovements(x, y);
+    }
+
+    public void setStrategy(PieceStrategy pieceStrategy)
+    {
+        this.pieceStrategy = pieceStrategy;
     }
 
 }

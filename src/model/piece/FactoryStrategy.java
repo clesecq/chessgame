@@ -1,47 +1,42 @@
 package model.piece;
 
 import model.Color;
-import model.Position;
 
-public class Factory {
-    private Position[][] board;
-    public Factory(Position[][] board){
-        this.board = board;
-    }
+public class FactoryStrategy {
 
     public Piece createKing(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new King(board));
+        piece.setStrategy(new KingStrategy());
         return piece;
     }
 
     public Piece createQueen(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new Queen(board));
+        piece.setStrategy(new QueenStrategy());
         return piece;
     }
 
     public Piece createRook(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new Rook(board));
+        piece.setStrategy(new RookStrategy());
         return piece;
     }
 
     public Piece createKnight(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new Knight(board));
+        piece.setStrategy(new KnightStrategy());
         return piece;
     }
 
     public Piece createBishop(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new Bishop(board));
+        piece.setStrategy(new BishopPieceStrategy());
         return piece;
     }
 
     public Piece createPawn(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new Pawn(board, color));
+        piece.setStrategy(new PawnStrategy(color));
         return piece;
     }
 }
