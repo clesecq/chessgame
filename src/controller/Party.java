@@ -12,7 +12,7 @@ public class Party {
 
     private model.Color currentPlayer = model.Color.WHITE;
 
-    private Position selectedPosition;
+    private Position previousPosition;
 
 
     public Party() {
@@ -21,9 +21,6 @@ public class Party {
 
         for (Position[] lines : chessboard.getBoard()) {
             for (Position position : lines) {
-                position.observer.add(new CaptureObserver(chessboard));
-                position.observer.add(new MovementObserver());
-
                 if (position.getPiece() != null) {
                     view.drawPosition(position);
                 }
@@ -39,28 +36,21 @@ public class Party {
         if (x < 0 || x > 7 || y < 0 || y > 7)
             throw new IllegalArgumentException("Invalid position");
 
+        view.resetAllBackground();
         Position position = chessboard.getBoard()[x][y];
-        
-        if (position.getPiece() != null && position.getPiece().getColor() == currentPlayer) {
-            for (Position[] row : chessboard.getBoard())
-                for (Position p : row)
-                    view.resetColor(p);
 
-            view.setColor(position, Color.GRAY);
+        if (previousPosition == null) {
+            if (position.getPiece() != null && position.getPiece().getColor() == currentPlayer) {
+                view.setColor(position, Color.GRAY);
 
-            int row = selectedPosition.getRow();
-            int column = selectedPosition.getColumn();
+                int row = position.getRow();
+                int column = position.getColumn();
 
-            for (int[] coordinates : selectedPosition.getPiece().getMovements(row, column)) {
-                Position p = chessboard.getBoard()[coordinates[0]][coordinates[1]];
-                
-                if (p != null) {
+                for (int[] coordinates : position.getPiece().getMovements(row, column)) {
+                    Position p = chessboard.getBoard()[coordinates[0]][coordinates[1]];
                     view.setColor(p, Color.GREEN);
-                    view.resetColor(p);
                 }
             }
-
-            selectedPosition = position;
         }
     }
 }

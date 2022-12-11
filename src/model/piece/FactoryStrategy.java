@@ -30,7 +30,7 @@ public class FactoryStrategy {
 
     public Piece createBishop(Color color) {
         Piece piece = new Piece(color);
-        piece.setStrategy(new BishopPieceStrategy());
+        piece.setStrategy(new BishopStrategy());
         return piece;
     }
 
