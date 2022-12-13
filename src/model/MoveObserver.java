@@ -1,5 +1,6 @@
 package model;
 
 public interface MoveObserver {
-    void onMove(Position oldPosition, Position newPosition);
+    void beforeMove(Position oldPosition, Position newPosition);
+    void afterMove(Position oldPosition, Position newPosition);
 }

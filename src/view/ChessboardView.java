@@ -16,14 +16,13 @@ public class ChessboardView extends JFrame {
 
         setTitle("Chessboard");
         setSize(800, 800);
+        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(8, 8));
 
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
                 add(createLabel(i, j));
-
-        setVisible(true);
     }
 
     private JLabel createLabel(int x, int y) {
@@ -52,16 +51,7 @@ public class ChessboardView extends JFrame {
         label.setText(c.toString());
     }
 
-    public void resetColor(Position position) {
-        if (position == null) {
-            return;
-        }
-
-        JLabel label = getLabel(position);
-        resetColor(label, position.getPosition()[0], position.getPosition()[1]);
-    }
-
-    public void resetColor(JLabel label, int x, int y) {
+    private void resetColor(JLabel label, int x, int y) {
         if ((x + y) % 2 == 0) {
             label.setBackground(java.awt.Color.white);
             label.setForeground(java.awt.Color.black);
@@ -77,7 +67,7 @@ public class ChessboardView extends JFrame {
     }
 
     private int positionToIndex(Position position) {
-        return position.getPosition()[0] * 8 + position.getPosition()[1];
+        return position.getRow() * 8 + position.getColumn();
     }
 
     private JLabel indexToLabel(int index) {
@@ -86,5 +76,11 @@ public class ChessboardView extends JFrame {
 
     public JLabel getLabel(Position position) {
         return indexToLabel(positionToIndex(position));
+    }
+
+    public void resetAllBackground() {
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+                resetColor(indexToLabel(i * 8 + j), i, j);
     }
 }

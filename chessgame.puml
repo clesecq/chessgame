@@ -6,124 +6,158 @@ skinparam style strictuml
 skinparam ClassAttributeIconSize 0
 skinparam ClassFontStyle bold
 
-' constructeur à ajouter
-' mouvement des pièces !!!
-' aggrécation/composition -> nom des attributs
-' type primaire exclusivement comeme attribut
-
 package "model" {
     enum Color {
         WHITE
         BLACK
+        NONE
     }
 
     class Position {
-        - x: Integer
-        - y: Integer
+        - x: Integer {readOnly}
+        - y: Integer {readOnly}
         + Position(x: Integer, y: Integer)
-        + move(oldPosition: Position, newPosition: Position)
+        + getPosition() : Integer[]
+        + getRow() : Integer
+        + getColumn() : Integer
         + getPiece() : Piece
+        + setPiece(piece : Piece)
     }
+    Position  --* "1" Piece : <<contains>> piece
 
     class Chessboard {
-        - Chessboard()
+        + Chessboard()
+        + addCapturedPiece( piece : Piece)
+        + getBoard() : Position[]
+        + movePiece( from : Position, to : Position)
    }
-    Chessboard *-- "64..64" Position : <<contains>>
-    Chessboard *-- "0..22" Piece : <<contains>>
+    Chessboard *-- "64..64" Position : <<contains>> board
+    Chessboard *-- "0..22" Piece : <<contains>> capturedPiece
+    Chessboard o- "0..*" MoveObserver : <<observe>> moveObservers
 
     package "piece" {
         class Piece {
+            + Piece()
             + getColor() : Color
             + getPoints() : Integer
             + getLetter() : String
-            + setStrategy(strategy: Strategy)
-            + getMovements(currentPosition: Position) : Position[]
+
+            + getMovements(x : Integer, y : Integer) : Integer[]
         }
-        Piece *-- "1" Strategy : <<contains>>
-        Piece *-- "1" Color : <<contains>>
-        Piece *- "0..*" MovementObserver : <<contains>>
+        Piece *-- "1" Color : <<contains>> color
 
-
-        interface Strategy <<interface>> {
+        interface PieceStrategy <<interface>> {
             + getPoints() : Integer
             + getLetter() : String
-            + getMovements() : Position[]
-            + canCastling() : Boolean
+            + getMovements(x : Integer, y : Integer) : Integer[]
         }
 
-        class King implements Strategy
-        class Queen implements Strategy
-        class Rook implements Strategy {
+        class KingStrategy implements PieceStrategy{
+            + getPoints() : Integer
+            + getLetter() : String
+            + getMovements(x : Integer, y : Integer) : Integer[]
+        }
+
+        class QueenStrategy implements PieceStrategy{
+            +getPoints() : Integer
+            +getLetter() : String
+            + getMovements(x : Integer, y : Integer) : Integer[]
+        }
+
+        class RookStrategy implements PieceStrategy {
+            + getPoints() : Integer
+            + getLetter() : String
+            + getMovements(x : Integer, y : Integer) : Integer[]
+        }
+
+        class BishopStrategy implements PieceStrategy{
+            + getPoints() : Integer
+            + getLetter() : String
+            + getMovements(x : Integer, y : Integer) : Integer[]
+        }
+
+        class KnightStrategy implements PieceStrategy {
+            + getPoints() : Integer
+            + getLetter() : String
+            + getMovements(x : Integer, y : Integer) : Integer[]
             - castling : Boolean
         }
-        class Bishop implements Strategy
-        class Knight implements Strategy {
-            - castling : Boolean
-        }
-        class Pawn implements Strategy
 
-        class Factory {
-            + createKing(color: Color) : King
-            + createQueen(color: Color) : Queen
-            + createRook(color: Color) : Rook
-            + createBishop(color: Color) : Bishop
-            + createKnight(color: Color) : Knight
-            + createPawn(color: Color) : Pawn
+        class PawnStrategy implements PieceStrategy{
+            + getPoints() : Integer
+            + getLetter() : String
+            + getMovements(x : Integer, y : Integer) : Integer[]
         }
 
-        King <.. Factory : <<use>>
-        Queen <.. Factory : <<use>>
-        Rook <.. Factory : <<use>>
-        Bishop <.. Factory : <<use>>
-        Knight <.. Factory : <<use>>
-        Pawn <.. Factory : <<use>>
+        class FactoryStrategy {
+            + createKingStrategy(color: Color) : Piece
+            + createQueenStrategy(color: Color) : Piece
+            + createRookStrategy(color: Color) : Piece
+            + createBishopStrategy(color: Color) : Piece
+            + createKnightStrategy(color: Color) : Piece
+            + createPawnStrategy(color: Color) : Piece
+        }
 
-        Factory .> Piece : <<create>>
+        KingStrategy <.. FactoryStrategy : <<use>>
+        QueenStrategy <.. FactoryStrategy : <<use>>
+        RookStrategy <.. FactoryStrategy : <<use>>
+        BishopStrategy <.. FactoryStrategy : <<use>>
+        KnightStrategy <.. FactoryStrategy : <<use>>
+        PawnStrategy <.. FactoryStrategy : <<use>>
+
+        FactoryStrategy .> Piece : <<create>>
     }
 
-    interface MovementObserver <<interface>> {
-        + update(old: Position, new: Position)
+    interface MoveObserver <<interface>> {
+         + beforeMove(oldPosition : Position, newPosition : Position)
+         + afterMove(oldPosition : Position, newPosition : Position)
     }
 
-    Chessboard ..> Factory : <<use>>
+    Chessboard ..> FactoryStrategy : <<use>>
 
+    class CaptureObserver implements MoveObserver{
+            + beforeMove(oldPosition : Position, newPosition : Position)
+            + afterMove(oldPosition : Position, newPosition : Position)
+    }
+    CaptureObserver --* Chessboard : <<contains>>
 
-    Position ..> Piece : <<use>>
 }
 
 
 package "view" {
-    class ChessboardView {
-        - chessboard : Chessboard
-        - ChessboardView()
-        + getInstance() : ChessboardView
-        + draw()
-        - case[]
+    class ChessboardView extends JFrame {
+        + ChessboardView()
+        - createLabel(x: Integer, y: Integer) : JLabel
+        + drawPosition(position: Position)
+        - resetColor(label: JLabel, x: Integer, y: Integer)
+        + setColor(position: Position, color: java.awt.Color)
+        - positionToIndex(position: Position) : Integer
+        - indexToLabel(index: Integer) : JLabel
+        - getLabel(position: Position) : JLabel
+        + resetAllBackground()
     }
-
-    class PieceObserver implements MovementObserver {
-        + update(old: Position, new: Position)
-    }
+    ChessboardView ..> Position : <<use>>
 }
 
 package "controller" {
     class ChessMain() {
         + {static} main()
     }
-    Player "2" --> "1" ChessboardView : <<contains>>
 
-    class Player {
-        - color : Color
-        + playTurn()
+    class CheckObserver implements MoveObserver {
+        + update(oldPosition: Position, newPosition: Position)
     }
 
-    class CheckObserver implements MovementObserver {
-        + update(old: Position, new: Position)
+    class Party {
+        + Party()
+        + ClikOnCase(x : Integer, y : Integer)
     }
 
-    Player ..> Color : <<use>>
+    Party --* "1" Chessboard: <<contains>> chessboard
+    Party --* ChessboardView: <<use>> 
+    Party --* "1" Color: <<contains>> currentColor
+    Party --* Position: <<use>>
 }
 
-ChessboardView ..> Chessboard : <<use>>
 
 @enduml

@@ -8,9 +8,14 @@ public class CaptureObserver implements MoveObserver {
     }
 
     @Override
-    public void onMove(Position oldPosition, Position newPosition) {
+    public void beforeMove(Position oldPosition, Position newPosition) {
         if (newPosition.getPiece() != null) {
             chessboard.addCapturedPiece(newPosition.getPiece());
         }
+    }
+
+    @Override
+    public void afterMove(Position oldPosition, Position newPosition) {
+        // nothing to do
     }
 }

@@ -61,11 +61,13 @@ public class Chessboard {
 
     public void movePiece(Position from, Position to)
     {
-        for (MoveObserver moveObserver : moveObservers) {
-            moveObserver.onMove(from, to);
-        }
+        for (MoveObserver moveObserver : moveObservers)
+            moveObserver.beforeMove(from, to);
 
         to.setPiece(from.getPiece());
         from.setPiece(null);
+
+        for (MoveObserver moveObserver : moveObservers)
+            moveObserver.afterMove(from, to);
     }
 }
