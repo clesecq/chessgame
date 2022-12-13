@@ -16,14 +16,13 @@ public class ChessboardView extends JFrame {
 
         setTitle("Chessboard");
         setSize(800, 800);
+        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(8, 8));
 
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
                 add(createLabel(i, j));
-
-        setVisible(true);
     }
 
     private JLabel createLabel(int x, int y) {

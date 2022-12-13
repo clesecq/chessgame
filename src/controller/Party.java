@@ -47,8 +47,10 @@ public class Party {
                 int column = position.getColumn();
 
                 for (int[] coordinates : position.getPiece().getMovements(row, column)) {
-                    Position p = chessboard.getBoard()[coordinates[0]][coordinates[1]];
-                    view.setColor(p, Color.GREEN);
+                    if (coordinates[0] != -1 && coordinates[1] != -1) {
+                        Position newPosition = chessboard.getBoard()[coordinates[0]][coordinates[1]];
+                        view.setColor(newPosition, Color.GREEN);
+                    }
                 }
             }
         }
