@@ -158,7 +158,6 @@ package "controller" {
         + {static} main()
     }
     class CheckObserver implements MoveObserver {
-        + update(old: Position, new: Position)
     }
     class Party {
     +Party()
