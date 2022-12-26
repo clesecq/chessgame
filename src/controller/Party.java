@@ -37,21 +37,15 @@ public class Party {
             throw new IllegalArgumentException("Invalid position");
 
         view.resetAllBackground();
-        Position position = chessboard.getBoard()[x][y];
 
         if (previousPosition == null) {
+            Position position = chessboard.getBoard()[x][y];
+
             if (position.getPiece() != null && position.getPiece().getColor() == currentPlayer) {
                 view.setColor(position, Color.GRAY);
 
-                int row = position.getRow();
-                int column = position.getColumn();
-
-                for (int[] coordinates : position.getPiece().getMovements(row, column)) {
-                    if (coordinates[0] != -1 && coordinates[1] != -1) {
-                        Position newPosition = chessboard.getBoard()[coordinates[0]][coordinates[1]];
+                for (Position newPosition : chessboard.getMovements(position))
                         view.setColor(newPosition, Color.GREEN);
-                    }
-                }
             }
         }
     }
