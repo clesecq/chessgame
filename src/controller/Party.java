@@ -21,12 +21,6 @@ public class Party {
 
         for (Position[] lines : chessboard.getBoard()) {
             for (Position position : lines) {
-<<<<<<< HEAD
-                position.observer.add(new CaptureObserver(chessboard));
-              //  position.observer.add(new MoveObserver());
-
-=======
->>>>>>> c28b182fb6e2c32945fac3792d66aadfbbafe913
                 if (position.getPiece() != null) {
                     view.drawPosition(position);
                 }

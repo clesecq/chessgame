@@ -145,10 +145,7 @@ package "controller" {
     }
 
     class CheckObserver implements MoveObserver {
-<<<<<<< HEAD
-=======
         + update(oldPosition: Position, newPosition: Position)
->>>>>>> c28b182fb6e2c32945fac3792d66aadfbbafe913
     }
 
     class Party {
