@@ -2,7 +2,7 @@ package model.piece;
 
 import static java.lang.Math.max;
 
-public class BishopPieceStrategy implements PieceStrategy {
+public class BishopStrategy implements PieceStrategy {
 
     @Override
     public Character getLetter() {
