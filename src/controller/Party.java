@@ -3,7 +3,6 @@ package controller;
 import model.*;
 import view.*;
 
-import javax.swing.*;
 import java.awt.Color;
 
 public class Party {
@@ -45,20 +44,31 @@ public class Party {
             selectPosition(chessboard.getBoard()[x][y]);
         }
         else {
-            movePiece(previousPosition, chessboard.getBoard()[x][y]);
+            boolean moved = movePiece(previousPosition, chessboard.getBoard()[x][y]);
+            if (moved) changePlayer();
         }
     }
 
-    private void selectPosition(Position position) {
-        if (position.getPiece() != null && position.getPiece().getColor() == currentPlayer) {
-            previousPosition = position;
-            for (Position newPosition : chessboard.getMovements(position))
-                view.setColor(newPosition, Color.GREEN);
-        }
+    private boolean selectPosition(Position position) {
+        if (position.getPiece() == null || position.getPiece().getColor() != currentPlayer)
+            return false;
+
+        previousPosition = position;
+        Position[] possiblePositions = chessboard.getMovements(position);
+
+        for (Position newPosition : possiblePositions)
+            view.setColor(newPosition, Color.GREEN);
+
+        return possiblePositions.length > 0;
     }
 
-    private void movePiece(Position oldPosition, Position newPosition) {
-        chessboard.movePiece(oldPosition, newPosition);
+    private boolean movePiece(Position oldPosition, Position newPosition) {
         previousPosition = null;
+        chessboard.movePiece(oldPosition, newPosition);
+        return true;
+    }
+
+    private void changePlayer() {
+        currentPlayer = currentPlayer == model.Color.WHITE ? model.Color.BLACK : model.Color.WHITE;
     }
 }
