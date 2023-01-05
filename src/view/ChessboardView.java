@@ -2,6 +2,7 @@ package view;
 
 import controller.Party;
 import model.*;
+import model.piece.Piece;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,8 +48,9 @@ public class ChessboardView extends JFrame {
 
     public void drawPosition(Position position) {
         JLabel label = getLabel(position);
-        Character c = position.getPiece().getLetter();
-        label.setText(c.toString());
+        Piece piece = position.getPiece();
+        String text = piece == null ? "" : piece.getLetter().toString();
+        label.setText(text);
     }
 
     private void resetColor(JLabel label, int x, int y) {

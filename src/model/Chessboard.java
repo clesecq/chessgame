@@ -49,7 +49,7 @@ public class Chessboard {
         }
     }
 
-    public void addCapturedPiece(model.piece.Piece piece)
+    public void addCapturedPiece(Piece piece)
     {
         capturedPiece.add(piece);
     }
