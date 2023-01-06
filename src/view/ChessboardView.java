@@ -1,16 +1,14 @@
 package view;
 
+import controller.CaseState;
 import controller.Party;
 import model.*;
-import model.piece.Piece;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ChessboardView extends JFrame {
-    private final Party party;
+    final Party party;
 
     public ChessboardView(Party party) {
         this.party = party;
@@ -21,68 +19,18 @@ public class ChessboardView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(8, 8));
 
-        for (int i = 0; i < 8; i++)
-            for (int j = 0; j < 8; j++)
-                add(createLabel(i, j));
+        for (int x = 0; x < 8; x++)
+            for (int y = 0; y < 8; y++)
+                add(new Case(party, x, y));
     }
 
-    private JLabel createLabel(int x, int y) {
-        JLabel label = new JLabel();
-
-        resetColor(label, x, y);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.PLAIN, 50));
-        label.setOpaque(true);
-
-        label.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e)
-            {
-                party.clickOnCase(x, y);
-            }
-        });
-
-
-        return label;
+    public Case getCase(Position position) {
+        return (Case) getContentPane().getComponent(position.getRow() * 8 + position.getColumn());
     }
 
-    public void drawPosition(Position position) {
-        JLabel label = getLabel(position);
-        Piece piece = position.getPiece();
-        String text = piece == null ? "" : piece.getLetter().toString();
-        label.setText(text);
-    }
-
-    private void resetColor(JLabel label, int x, int y) {
-        if ((x + y) % 2 == 0) {
-            label.setBackground(java.awt.Color.white);
-            label.setForeground(java.awt.Color.black);
-        } else {
-            label.setBackground(java.awt.Color.black);
-            label.setForeground(java.awt.Color.white);
-        }
-    }
-
-    public void setColor(Position position, java.awt.Color color) {
-        JLabel label = getLabel(position);
-        label.setBackground(color);
-    }
-
-    private int positionToIndex(Position position) {
-        return position.getRow() * 8 + position.getColumn();
-    }
-
-    private JLabel indexToLabel(int index) {
-        return (JLabel) getContentPane().getComponent(index);
-    }
-
-    public JLabel getLabel(Position position) {
-        return indexToLabel(positionToIndex(position));
-    }
 
     public void resetAllBackground() {
-        for (int i = 0; i < 8; i++)
-            for (int j = 0; j < 8; j++)
-                resetColor(indexToLabel(i * 8 + j), i, j);
+        for (int i = 0; i < 64; i++)
+            ((Case) getContentPane().getComponent(i)).set(CaseState.DEFAULT);
     }
 }

@@ -3,8 +3,6 @@ package controller;
 import model.*;
 import view.*;
 
-import java.awt.Color;
-
 public class Party {
     private Chessboard chessboard;
     private ChessboardView view;
@@ -21,13 +19,10 @@ public class Party {
         chessboard.moveObservers.add(new CaptureObserver(chessboard));
         chessboard.moveObservers.add(new MovementViewObserver(view));
 
-        for (Position[] lines : chessboard.getBoard()) {
-            for (Position position : lines) {
-                if (position.getPiece() != null) {
-                    view.drawPosition(position);
-                }
-            }
-        }
+        for (Position[] lines : chessboard.getBoard())
+            for (Position position : lines)
+                if (position.getPiece() != null)
+                    view.getCase(position).setPiece(position.getPiece().getLetter().toString());
     }
 
     public model.Color getCurrentPlayer() {
@@ -54,12 +49,12 @@ public class Party {
             return false;
 
         previousPosition = position;
-        Position[] possiblePositions = chessboard.getMovements(position);
+        Position[] movements = chessboard.getMovements(position);
 
-        for (Position newPosition : possiblePositions)
-            view.setColor(newPosition, Color.GREEN);
+        for (Position movement : movements)
+            view.getCase(movement).set(CaseState.POSSIBLE);
 
-        return possiblePositions.length > 0;
+        return movements.length > 0;
     }
 
     private boolean movePiece(Position oldPosition, Position newPosition) {
