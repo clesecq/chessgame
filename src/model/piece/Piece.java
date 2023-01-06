@@ -40,9 +40,10 @@ public class Piece {
      * Get the letter of the piece.
      * @return the letter of the piece
      */
-    public Character getLetter()
+    public String getName()
     {
-        return pieceStrategy.getLetter();
+        String playerColor = this.playerColor == PlayerColor.WHITE ? "white" : "black";
+        return playerColor + '-' + pieceStrategy.getName();
     }
 
     /**

@@ -4,8 +4,8 @@ public class RookStrategy implements PieceStrategy {
 
 
     @Override
-    public Character getLetter() {
-        return 'R';
+    public String getName() {
+        return "rook";
     }
 
     @Override

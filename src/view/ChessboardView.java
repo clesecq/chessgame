@@ -15,9 +15,12 @@ public class ChessboardView extends JFrame {
 
     private final JPanel chessboardPanel = new JPanel(new GridLayout(8, 8));
 
+    public final CapturedView whiteCaptured = new CapturedView("White captured");
+    public final CapturedView blackCaptured = new CapturedView("Black captured");
+
     public ChessboardView(Party party) {
         setTitle("Chessboard");
-        setSize(800, 800);
+        setSize(900, 800);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -26,11 +29,25 @@ public class ChessboardView extends JFrame {
             for (int y = 0; y < 8; y++) {
                 Cell c = new Cell(party, x, y);
                 cases[x][y] = c;
-                chessboardPanel.add(c);
             }
+
+        for (int i = 7; i >= 0; i--)
+            for (int j = 7; j >= 0; j--)
+                chessboardPanel.add(cases[i][j]);
 
         chessboardPanel.setSize(800, 800);
         add(chessboardPanel);
+
+        // Init captured pieces
+        JPanel capturedPanel = new JPanel(new GridLayout(2, 1));
+        capturedPanel.setSize(100, 800);
+
+        add(capturedPanel, BorderLayout.EAST);
+
+        capturedPanel.add(blackCaptured);
+        capturedPanel.add(whiteCaptured);
+
+        capturedPanel.setLayout(new BoxLayout(capturedPanel, BoxLayout.Y_AXIS));
     }
 
     /**

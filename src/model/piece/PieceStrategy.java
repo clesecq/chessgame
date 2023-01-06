@@ -8,7 +8,7 @@ public interface PieceStrategy {
      * Get the letter of the piece.
      * @return the letter of the piece
      */
-    Character getLetter();
+    String getName();
 
     /**
      * Get the points of the piece.

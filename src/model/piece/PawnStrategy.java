@@ -10,8 +10,8 @@ public class PawnStrategy implements PieceStrategy {
     }
 
     @Override
-    public Character getLetter() {
-        return 'P';
+    public String getName() {
+        return "pawn";
     }
 
     @Override

@@ -15,10 +15,6 @@ public class Chessboard {
      */
 
     private Position[][] board = new Position[8][8];
-    /**
-     * The captured pieces.
-     */
-    private ArrayList<Piece> capturedPiece = new ArrayList<>();
 
     /**
      * List of movement observers.
@@ -30,14 +26,14 @@ public class Chessboard {
     {
         // initial disposition, upper case for white, lower case for black
         Character[][] initial = {
-            { 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },
+            { 'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R' },
             { 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
-            { 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' },
+            { 'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r' },
         };
 
         FactoryStrategy f = new FactoryStrategy();
@@ -47,13 +43,32 @@ public class Chessboard {
                 Character letter = initial[i][j];
 
                 switch (letter){
-                    case 'R', 'r' -> piece = f.createRook('R' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'N', 'n' -> piece = f.createKnight('N' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'B', 'b' -> piece = f.createBishop('B' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'Q', 'q' -> piece = f.createQueen('Q' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'K', 'k' -> piece = f.createKing('K' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'P', 'p' -> piece = f.createPawn('P' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    default -> piece = null;
+                    case 'R':
+                    case 'r':
+                        piece = f.createRook('R' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'N':
+                    case 'n':
+                        piece = f.createKnight('N' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'B':
+                    case 'b':
+                        piece = f.createBishop('B' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'Q':
+                    case 'q':
+                        piece = f.createQueen('Q' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'K':
+                    case 'k':
+                        piece = f.createKing('K' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'P':
+                    case 'p':
+                        piece = f.createPawn('P' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    default:
+                        piece = null;
                 }
 
                 Position position = new Position(i, j);
@@ -61,15 +76,6 @@ public class Chessboard {
                 board[i][j] = position;
             }
         }
-    }
-
-    /**
-     * Add a piece to the captured pieces list.
-     * @param piece the piece to add
-     */
-    public void addCapturedPiece(Piece piece)
-    {
-        capturedPiece.add(piece);
     }
 
     /** Get the board.
