@@ -117,7 +117,7 @@ package "model" {
 
     class CaptureObserver implements MoveObserver{
             + beforeMove(oldPosition : Position, newPosition : Position)
-            + afterMove(oldPosition : Position, newPosition : Position)
+            + afterMove(oldP osition : Position, newPosition : Position)
     }
     CaptureObserver --* Chessboard : <<contains>>
 

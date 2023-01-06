@@ -11,6 +11,11 @@ public class CaptureObserver implements MoveObserver {
     public void beforeMove(Position oldPosition, Position newPosition) {
         if (newPosition.getPiece() != null) {
             chessboard.addCapturedPiece(newPosition.getPiece());
+            try {
+                System.out.println(newPosition.getPiece().getPoints());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
