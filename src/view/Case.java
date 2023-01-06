@@ -13,6 +13,9 @@ public class Case extends javax.swing.JLabel {
     final private Color defaultColor;
     final private int x, y;
 
+    private CaseState state = CaseState.DEFAULT;
+
+
 
     private Party party;
 
@@ -22,6 +25,15 @@ public class Case extends javax.swing.JLabel {
         this.x = x;
         this.y = y;
 
+        addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (state == CaseState.POSSIBLE)
+                    party.moveCase(x, y);
+                else
+                    party.selectCase(x, y);
+            }
+        });
+
         this.defaultColor = x % 2 == y % 2 ? Color.WHITE : Color.BLACK;
         empty();
         setForeground(java.awt.Color.gray);
@@ -30,20 +42,15 @@ public class Case extends javax.swing.JLabel {
         setVerticalAlignment(SwingConstants.CENTER);
         setFont(new Font("Arial", Font.PLAIN, 50));
         setOpaque(true);
-
-        addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e)
-            {
-                party.clickOnCase(x, y);
-            }
-        });
     }
 
     public void setPiece(String piecePath) {
         setText(piecePath == null ? "" : piecePath);
     }
 
-    public void set(CaseState state) {
+    public void setState(CaseState state) {
+        this.state = state;
+
         setBackground(switch (state) {
             case SELECTED -> Color.GRAY;
             case POSSIBLE -> isEmpty() ? Color.GREEN : Color.RED;
@@ -57,6 +64,6 @@ public class Case extends javax.swing.JLabel {
 
     public void empty() {
         setText("");
-        set(CaseState.DEFAULT);
+        setState(CaseState.DEFAULT);
     }
 }

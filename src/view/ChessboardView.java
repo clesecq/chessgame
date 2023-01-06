@@ -9,6 +9,7 @@ import java.awt.*;
 
 public class ChessboardView extends JFrame {
     final Party party;
+    final Case[][] cases = new Case[8][8];
 
     public ChessboardView(Party party) {
         this.party = party;
@@ -19,18 +20,23 @@ public class ChessboardView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(8, 8));
 
+        // Init chessboard
         for (int x = 0; x < 8; x++)
-            for (int y = 0; y < 8; y++)
-                add(new Case(party, x, y));
+            for (int y = 0; y < 8; y++) {
+                Case c = new Case(party, x, y);
+                cases[x][y] = c;
+                chessboardPanel.add(c);
+            }
     }
 
-    public Case getCase(Position position) {
-        return (Case) getContentPane().getComponent(position.getRow() * 8 + position.getColumn());
+    public Case getCase(Position p) {
+        return cases[p.getRow()][p.getColumn()];
     }
 
 
     public void resetAllBackground() {
-        for (int i = 0; i < 64; i++)
-            ((Case) getContentPane().getComponent(i)).set(CaseState.DEFAULT);
+        for (Case[] lines : cases)
+            for (Case c : lines)
+                c.setState(CaseState.DEFAULT);
     }
 }
