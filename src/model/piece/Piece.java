@@ -2,34 +2,53 @@ package model.piece;
 
 import model.*;
 
+/**
+ * A piece on chessboard.
+ */
 public class Piece {
-
-    private Color color ;
-
-    private Position position;
-
+    /**
+     * The player color of the piece
+     */
+    private PlayerColor playerColor;
+    /**
+     * The strategy of the piece (type of the piece)
+     */
     private PieceStrategy pieceStrategy;
 
-    private Integer points ;
-
-    private Character letter ;
-
-    public Piece(Color color){
-        this.color = color;
+    public Piece(PlayerColor playerColor){
+        this.playerColor = playerColor;
     }
 
-    public Color getColor()
+    /**
+     * Get the player color of the piece.
+     * @return the player color of the piece
+     */
+    public PlayerColor getPlayerColor()
     {
-        return this.color;
+        return playerColor;
     }
-    public Integer getPoints() throws Exception {
+
+    /**
+     * Get the points of the piece.
+     * @return the points of the piece
+     */
+    public Integer getPoints() {
         return pieceStrategy.getPoints();
     }
+
+    /**
+     * Get the letter of the piece.
+     * @return the letter of the piece
+     */
     public Character getLetter()
     {
         return pieceStrategy.getLetter();
     }
 
+    /**
+     * Get the possible movement of the piece.
+     * @return the strategy of the piece
+     */
     public int[][] getMovements(int x, int y)
     {
         int[][] movements = pieceStrategy.getMovements(x, y);
@@ -45,9 +64,12 @@ public class Piece {
         return movements;
     }
 
+    /**
+     * Set the strategy of the piece.
+     * @param pieceStrategy the strategy of the piece
+     */
     public void setStrategy(PieceStrategy pieceStrategy)
     {
         this.pieceStrategy = pieceStrategy;
     }
-
 }

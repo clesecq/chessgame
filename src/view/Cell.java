@@ -1,0 +1,95 @@
+package view;
+
+import controller.Party;
+import controller.CellState;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+/**
+ * Cell view of the chessboard.
+ */
+public class Cell extends javax.swing.JLabel {
+    /**
+     * Default background color of the cell.
+     */
+    final private Color defaultColor;
+
+    /**
+     * Cell state.
+     */
+    private CellState state = CellState.DEFAULT;
+
+    /**
+     * Current party. Used to transmit the click to the controller.
+     */
+    private Party party;
+
+
+    public Cell(Party party, int x, int y) {
+        this.party = party;
+
+        addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (state == CellState.POSSIBLE)
+                    party.moveCase(x, y); // if a move is possible, the cell is clicked to move the piece
+                else
+                    party.selectCase(x, y); // if no move is possible, the cell is clicked to select a piece
+            }
+        });
+
+        // Define default background color and set it
+        this.defaultColor = x % 2 == y % 2 ? Color.WHITE : Color.BLACK;
+        empty();
+        setForeground(java.awt.Color.gray);
+
+        // Style of the cell
+        setHorizontalAlignment(SwingConstants.CENTER);
+        setVerticalAlignment(SwingConstants.CENTER);
+        setFont(new Font("Arial", Font.PLAIN, 50));
+        setOpaque(true);
+    }
+
+    /**
+     * Set the cell piece.
+     * @param piecePath Path of the piece image.
+     */
+    public void setPiece(String piecePath) {
+        // TODO: use image
+        setText(piecePath == null ? "" : piecePath);
+    }
+
+    /**
+     * Set the cell state.
+     * @param state State of the cell.
+     */
+    public void setState(CellState state) {
+        this.state = state;
+
+        setBackground(switch (state) {
+            case SELECTED -> Color.GRAY;
+            // if cell is not empty, capture is possible
+            case POSSIBLE -> isEmpty() ? Color.GREEN : Color.RED;
+            default -> defaultColor;
+        });
+    }
+
+    /**
+     * Check if the cell is empty.
+     * @return True if the cell is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return getText().equals("");
+    }
+
+    /**
+     * Reset the cell state to default.
+     */
+    public void empty() {
+        setText(""); // remove symbol
+        setState(CellState.DEFAULT); // restore default background color
+    }
+}
