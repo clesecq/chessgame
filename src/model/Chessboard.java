@@ -6,6 +6,7 @@ import model.piece.Piece;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Chessboard {
 
@@ -154,16 +155,14 @@ public class Chessboard {
 
 
         Character[][] initial = {
-                { 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },
-                // { 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },
-                { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-                { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-                { ' ', ' ', ' ', ' ', 'N', ' ', ' ', ' ' },
-                { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-                { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-                { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-                // { 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
-                { 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' },
+            { 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },
+            { 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },
+            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+            { 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
+            { 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' },
         };
 
         FactoryStrategy f = new FactoryStrategy();
@@ -189,13 +188,51 @@ public class Chessboard {
         }
     }
 
-    public void addCapturedPiece(model.piece.Piece piece)
+    public void addCapturedPiece(Piece piece)
     {
         capturedPiece.add(piece);
     }
 
     public Position[][] getBoard() {
         return board;
+    }
+
+    public Position[] getMovements(Position position) {
+        Position[] positions = new Position[]{};
+        Piece piece = position.getPiece();
+        int i = 0, j = 0;
+
+        if (piece != null) {
+            int[][] movements = piece.getMovements(position.getRow(), position.getColumn());
+
+            positions = new Position[movements.length];
+            while (i < movements.length) {
+                if (movements[i] == null)
+                    break;
+
+                if (movements[i][0] == -1 && movements[i][1] == -1) {
+                    i++;
+                    continue;
+                }
+
+                Position potentialPosition = board[movements[i][0]][movements[i][1]];
+
+                if (potentialPosition.getPiece() != null) {
+                    if (potentialPosition.getPiece().getColor() != piece.getColor()) {
+                        positions[j++] = potentialPosition;
+                    }
+
+                    i++;
+                    while (i < movements.length && !Arrays.equals(movements[i], new int[]{-1, -1}))
+                        i++;
+                } else {
+                    positions[j++] = potentialPosition;
+                    i++;
+                }
+            }
+        }
+
+        return Arrays.copyOf(positions, j);
     }
 
     public void movePiece(Position from, Position to)
