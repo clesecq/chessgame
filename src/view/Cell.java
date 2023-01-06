@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
@@ -62,10 +61,7 @@ public class Cell extends javax.swing.JLabel {
      */
     public void setPiece(String piecePath) {
         try {
-            String path = "picture/" + piecePath + ".png";
-            URL url = getClass().getClassLoader().getResource(path);
-            BufferedImage img = ImageIO.read(url);
-            setIcon(new ImageIcon(img));
+            setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("picture/" + piecePath + ".png"))));
         } catch (IOException e) {
             System.exit(1);
         }
