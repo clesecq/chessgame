@@ -16,7 +16,7 @@ public class Party {
         chessboard = new Chessboard();
         view = new ChessboardView(this);
 
-        chessboard.moveObservers.add(new CaptureObserver(chessboard, view));
+        chessboard.moveObservers.add(new CaptureObserver(view));
         chessboard.moveObservers.add(new MovementViewObserver(view));
         chessboard.moveObservers.add(new PromotionObserver(view));
         chessboard.moveObservers.add(new EchecObserver(chessboard));

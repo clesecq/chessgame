@@ -9,11 +9,9 @@ import view.CapturedView;
 import view.ChessboardView;
 
 public class CaptureObserver implements MoveObserver {
-    private Chessboard chessboard;
     private ChessboardView view;
 
-    public CaptureObserver(Chessboard chessboard, ChessboardView view) {
-        this.chessboard = chessboard;
+    public CaptureObserver(ChessboardView view) {
         this.view = view;
     }
 
@@ -25,7 +23,6 @@ public class CaptureObserver implements MoveObserver {
         Piece p = newPosition.getPiece();
         // if new position is not empty, add the piece to the captured pieces list
         if (p != null) {
-            chessboard.addCapturedPiece(p);
             CapturedView c = p.getPlayerColor() == PlayerColor.WHITE ? view.whiteCaptured : view.blackCaptured;
             c.addPiece(p.getName());
             c.addScore(p.getPoints());

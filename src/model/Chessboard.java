@@ -15,10 +15,6 @@ public class Chessboard {
      */
 
     private Position[][] board = new Position[8][8];
-    /**
-     * The captured pieces.
-     */
-    private ArrayList<Piece> capturedPiece = new ArrayList<>();
 
     /**
      * List of movement observers.
@@ -80,15 +76,6 @@ public class Chessboard {
                 board[i][j] = position;
             }
         }
-    }
-
-    /**
-     * Add a piece to the captured pieces list.
-     * @param piece the piece to add
-     */
-    public void addCapturedPiece(Piece piece)
-    {
-        capturedPiece.add(piece);
     }
 
     /** Get the board.
