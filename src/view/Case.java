@@ -11,19 +11,14 @@ import java.awt.event.MouseEvent;
 
 public class Case extends javax.swing.JLabel {
     final private Color defaultColor;
-    final private int x, y;
 
     private CaseState state = CaseState.DEFAULT;
-
-
 
     private Party party;
 
 
     public Case(Party party, int x, int y) {
         this.party = party;
-        this.x = x;
-        this.y = y;
 
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
