@@ -3,9 +3,6 @@ package controller;
 import model.*;
 import view.*;
 
-import javax.swing.*;
-import java.awt.Color;
-
 public class Party {
     private Chessboard chessboard;
     private ChessboardView view;
@@ -22,13 +19,10 @@ public class Party {
         chessboard.moveObservers.add(new CaptureObserver(chessboard));
         chessboard.moveObservers.add(new MovementViewObserver(view));
 
-        for (Position[] lines : chessboard.getBoard()) {
-            for (Position position : lines) {
-                if (position.getPiece() != null) {
-                    view.drawPosition(position);
-                }
-            }
-        }
+        for (Position[] lines : chessboard.getBoard())
+            for (Position position : lines)
+                if (position.getPiece() != null)
+                    view.getCase(position).setPiece(position.getPiece().getLetter().toString());
     }
 
     public model.Color getCurrentPlayer() {
@@ -45,20 +39,31 @@ public class Party {
             selectPosition(chessboard.getBoard()[x][y]);
         }
         else {
-            movePiece(previousPosition, chessboard.getBoard()[x][y]);
+            boolean moved = movePiece(previousPosition, chessboard.getBoard()[x][y]);
+            if (moved) changePlayer();
         }
     }
 
-    private void selectPosition(Position position) {
-        if (position.getPiece() != null && position.getPiece().getColor() == currentPlayer) {
-            previousPosition = position;
-            for (Position newPosition : chessboard.getMovements(position))
-                view.setColor(newPosition, Color.GREEN);
-        }
+    private boolean selectPosition(Position position) {
+        if (position.getPiece() == null || position.getPiece().getColor() != currentPlayer)
+            return false;
+
+        previousPosition = position;
+        Position[] movements = chessboard.getMovements(position);
+
+        for (Position movement : movements)
+            view.getCase(movement).set(CaseState.POSSIBLE);
+
+        return movements.length > 0;
     }
 
-    private void movePiece(Position oldPosition, Position newPosition) {
-        chessboard.movePiece(oldPosition, newPosition);
+    private boolean movePiece(Position oldPosition, Position newPosition) {
         previousPosition = null;
+        chessboard.movePiece(oldPosition, newPosition);
+        return true;
+    }
+
+    private void changePlayer() {
+        currentPlayer = currentPlayer == model.Color.WHITE ? model.Color.BLACK : model.Color.WHITE;
     }
 }
