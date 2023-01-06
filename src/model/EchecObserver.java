@@ -19,7 +19,7 @@ public class EchecObserver  implements MoveObserver {
     }
 
     /**
-     * Do nothing.
+     * Check if the king is in check.
      */
     @Override
     public void afterMove(Position oldPosition, Position newPosition) {
@@ -30,7 +30,7 @@ public class EchecObserver  implements MoveObserver {
         Position posKing = pos[0][0];
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (pos[x][y].getPiece() != null && pos[x][y].getPiece().getLetter() == 'K' && pos[x][y].getPiece().getPlayerColor() != newPosition.getPiece().getPlayerColor())
+                if (pos[x][y].getPiece() != null && pos[x][y].getPiece().getName().contains("king") && pos[x][y].getPiece().getPlayerColor() != newPosition.getPiece().getPlayerColor())
                     posKing = pos[x][y];
 
             }
@@ -41,7 +41,6 @@ public class EchecObserver  implements MoveObserver {
                 test[j] = newPosition.getPiece().getMovements(newPosition.getRow(), newPosition.getColumn())[i][j];
             }
             if (test[0] == posKing.getRow() && test[1] == posKing.getColumn()) {
-                JFrame f = new JFrame("Welcome To WayToLearnX!");
                 //Créer le JPanel
                 JPanel panel = new JPanel();
                 JLabel label = new JLabel("Echec du joueur : "+posKing.getPiece().getPlayerColor(), JLabel.CENTER);
@@ -71,6 +70,5 @@ public class EchecObserver  implements MoveObserver {
                 break;
             }
         }
-
     }
 }

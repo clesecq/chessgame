@@ -18,16 +18,13 @@ public class Party {
 
         chessboard.moveObservers.add(new CaptureObserver(chessboard, view));
         chessboard.moveObservers.add(new MovementViewObserver(view));
+        chessboard.moveObservers.add(new PromotionObserver(view));
         chessboard.moveObservers.add(new EchecObserver(chessboard));
 
         for (Position[] lines : chessboard.getBoard())
             for (Position position : lines)
                 if (position.getPiece() != null)
                     view.getCell(position).setPiece(position.getPiece().getName());
-    }
-
-    public PlayerColor getCurrentPlayer() {
-        return currentPlayer;
     }
 
     public void selectCase(int x, int y) {
