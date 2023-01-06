@@ -30,14 +30,14 @@ public class Chessboard {
     {
         // initial disposition, upper case for white, lower case for black
         Character[][] initial = {
-            { 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },
+            { 'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R' },
             { 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-            { ' ', ' ', ' ', ' ', 'P', 'P', ' ', ' ' },
-            { ' ', ' ', ' ', 'p', 'p', ' ', ' ', ' ' },
+            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
-            { 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' },
+            { 'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r' },
         };
 
         FactoryStrategy f = new FactoryStrategy();
