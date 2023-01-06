@@ -36,7 +36,8 @@ public class BishopStrategy implements PieceStrategy {
             movements[i++] = new int[]{--x4, ++y4};
         movements[i++] = new int[]{-1, -1};
 
-        while (i < movements.length) movements[i++] = new int[]{-1, -1};
+        while (i < movements.length)
+            movements[i++] = new int[]{-1, -1};
 
         return movements;
     }

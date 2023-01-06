@@ -35,6 +35,9 @@ public class RookStrategy implements PieceStrategy {
             movements[index++] = new int[]{x, i};
         movements[index++] = new int[]{-1, -1};
 
+        while (index < movements.length)
+            movements[index++] = new int[]{-1, -1};
+
         return movements;
     }
 }
