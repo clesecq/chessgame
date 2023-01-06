@@ -25,7 +25,7 @@ public class ChessboardView extends JFrame {
             for (int y = 0; y < 8; y++) {
                 Case c = new Case(party, x, y);
                 cases[x][y] = c;
-                chessboardPanel.add(c);
+                this.add(c);
             }
     }
 
