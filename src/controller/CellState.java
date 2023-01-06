@@ -3,7 +3,7 @@ package controller;
 /**
  * State of view of a case.
  */
-public enum CaseState {
+public enum CellState {
     DEFAULT,
     SELECTED,
     POSSIBLE,
