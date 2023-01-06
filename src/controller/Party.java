@@ -18,6 +18,7 @@ public class Party {
 
         chessboard.moveObservers.add(new CaptureObserver(chessboard));
         chessboard.moveObservers.add(new MovementViewObserver(view));
+        chessboard.moveObservers.add(new EchecObserver(chessboard));
 
         for (Position[] lines : chessboard.getBoard())
             for (Position position : lines)
