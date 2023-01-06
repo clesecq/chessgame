@@ -77,13 +77,20 @@ public class Cell extends javax.swing.JLabel {
      */
     public void setState(CellState state) {
         this.state = state;
+        Color color;
 
-        setBackground(switch (state) {
-            case SELECTED -> Color.GRAY;
-            // if cell is not empty, capture is possible
-            case POSSIBLE -> isEmpty() ? Color.GREEN : Color.RED;
-            default -> defaultColor;
-        });
+        switch (state) {
+            case SELECTED:
+                color = Color.GRAY;
+                break;
+            case POSSIBLE:
+                color = isEmpty() ? Color.GREEN : Color.RED;
+                break;
+            default:
+                color = defaultColor;
+        }
+
+        setBackground(color);
     }
 
     /**

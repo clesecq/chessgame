@@ -47,13 +47,32 @@ public class Chessboard {
                 Character letter = initial[i][j];
 
                 switch (letter){
-                    case 'R', 'r' -> piece = f.createRook('R' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'N', 'n' -> piece = f.createKnight('N' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'B', 'b' -> piece = f.createBishop('B' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'Q', 'q' -> piece = f.createQueen('Q' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'K', 'k' -> piece = f.createKing('K' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    case 'P', 'p' -> piece = f.createPawn('P' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
-                    default -> piece = null;
+                    case 'R':
+                    case 'r':
+                        piece = f.createRook('R' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'N':
+                    case 'n':
+                        piece = f.createKnight('N' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'B':
+                    case 'b':
+                        piece = f.createBishop('B' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'Q':
+                    case 'q':
+                        piece = f.createQueen('Q' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'K':
+                    case 'k':
+                        piece = f.createKing('K' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    case 'P':
+                    case 'p':
+                        piece = f.createPawn('P' == letter ? PlayerColor.WHITE : PlayerColor.BLACK);
+                        break;
+                    default:
+                        piece = null;
                 }
 
                 Position position = new Position(i, j);
