@@ -29,6 +29,7 @@ package "model" {
         + Chessboard()
         + addCapturedPiece( piece : Piece)
         + getBoard() : Position[]
+        + getMovements((position : Position) : Position[]
         + movePiece( from : Position, to : Position)
    }
     Chessboard *-- "64..64" Position : <<contains>> board
@@ -41,8 +42,8 @@ package "model" {
             + getColor() : Color
             + getPoints() : Integer
             + getLetter() : String
-
             + getMovements(x : Integer, y : Integer) : Integer[]
+            + setStrategy
         }
         Piece *-- "1" Color : <<contains>> color
 
@@ -59,8 +60,8 @@ package "model" {
         }
 
         class QueenStrategy implements PieceStrategy{
-            +getPoints() : Integer
-            +getLetter() : String
+            + getPoints() : Integer
+            + getLetter() : String
             + getMovements(x : Integer, y : Integer) : Integer[]
         }
 
@@ -80,7 +81,6 @@ package "model" {
             + getPoints() : Integer
             + getLetter() : String
             + getMovements(x : Integer, y : Integer) : Integer[]
-            - castling : Boolean
         }
 
         class PawnStrategy implements PieceStrategy{
@@ -126,37 +126,58 @@ package "model" {
 
 package "view" {
     class ChessboardView extends JFrame {
-        + ChessboardView()
-        - createLabel(x: Integer, y: Integer) : JLabel
-        + drawPosition(position: Position)
-        - resetColor(label: JLabel, x: Integer, y: Integer)
-        + setColor(position: Position, color: java.awt.Color)
-        - positionToIndex(position: Position) : Integer
-        - indexToLabel(index: Integer) : JLabel
-        - getLabel(position: Position) : JLabel
+        + ChessboardView(party : Party)
+        + getCase(position : Position) : Case
         + resetAllBackground()
     }
-    ChessboardView ..> Position : <<use>>
+    ChessboardView ..> Party : <<use>> party
+    class Case extends javax.swing.JLabel {
+        - defaultColor : Color {readOnly}
+        - x: Integer {readOnly}
+        - y: Integer {readOnly}
+        +Case(party : Party, x : Integer, y : Integer)
+        +setPiece(piecePath : String)
+        +set(state : CaseState)
+        +isEmpty() : Boolean
+        +empty()
+    }
+    Case --* Party : <<use>> party
+
+   class MovementViewObserver implements MoveObserver{
+        +MovementViewObserver (chessboardView : ChessboardView)
+        + beforeMove(oldPosition : Position, newPosition : Position)
+        + afterMove(oldPosition : Position, newPosition : Position)
+   }
+   MovementViewObserver --* ChessboardView : <<use>> chessboardView
+
+
 }
 
 package "controller" {
+
+    enum CaseState {
+        DEFAULT
+        SELECTED
+        POSSIBLE
+    }
     class ChessMain() {
         + {static} main()
     }
 
-    class CheckObserver implements MoveObserver {
-        + update(oldPosition: Position, newPosition: Position)
-    }
-
     class Party {
         + Party()
+        + getCurrentPlayer() : Color
         + ClikOnCase(x : Integer, y : Integer)
+        - selectPosition(position : Position) : Boolean
+        - movePiece(oldPosition : Position, newPosition : Position) : Boolean
+        - changePlayer()
+
     }
 
     Party --* "1" Chessboard: <<contains>> chessboard
     Party --* ChessboardView: <<use>> 
     Party --* "1" Color: <<contains>> currentColor
-    Party --* Position: <<use>>
+    Party --* Position: <<use>> previous Position
 }
 
 
