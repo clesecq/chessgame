@@ -11,7 +11,6 @@ public class CaptureObserver implements MoveObserver {
     public void beforeMove(Position oldPosition, Position newPosition) {
         if (newPosition.getPiece() != null) {
             chessboard.addCapturedPiece(newPosition.getPiece());
-
         }
     }
 

@@ -3,8 +3,7 @@ package model;
 import model.piece.FactoryStrategy;
 import model.piece.Piece;
 
-import javax.swing.*;
-import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,7 +16,6 @@ public class Chessboard {
 
     public Chessboard()
     {
-
         Character[][] initial = {
             { 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },
             { 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },
