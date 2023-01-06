@@ -4,8 +4,23 @@ import model.*;
 
 public interface PieceStrategy {
 
-   Character getLetter();
+    /**
+     * Get the letter of the piece.
+     * @return the letter of the piece
+     */
+    Character getLetter();
 
-   Integer getPoints() throws Exception;
-   int[][] getMovements(int x, int y);
+    /**
+     * Get the points of the piece.
+     * @return the points of the piece
+     */
+    Integer getPoints();
+
+    /**
+     * Get the movements of the piece.
+     * @param x the x position of the piece
+     * @param y the y position of the piece
+     * @return the movements of the piece
+     */
+    int[][] getMovements(int x, int y);
 }

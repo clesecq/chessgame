@@ -16,11 +16,17 @@ public class MovementViewObserver implements MoveObserver {
         this.chessboardView = chessboardView;
     }
 
+    /**
+     * Empty the cell of the old position.
+     */
     @Override
     public void beforeMove(Position oldPosition, Position newPosition) {
-        chessboardView.getCase(oldPosition).empty();
+        chessboardView.getCell(oldPosition).empty();
     }
 
+    /**
+     * Set the piece in the new position.
+     */
     @Override
     public void afterMove(Position oldPosition, Position newPosition) {
         if (newPosition.getPiece().getLetter() == 'P' && newPosition.getRow() == 7 || newPosition.getPiece().getLetter() == 'P' && newPosition.getRow() == 0) {

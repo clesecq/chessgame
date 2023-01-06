@@ -1,42 +1,42 @@
 package model.piece;
 
-import model.Color;
+import model.PlayerColor;
 
 public class FactoryStrategy {
 
-    public Piece createKing(Color color) {
-        Piece piece = new Piece(color);
+    public Piece createKing(PlayerColor playerColor) {
+        Piece piece = new Piece(playerColor);
         piece.setStrategy(new KingStrategy());
         return piece;
     }
 
-    public Piece createQueen(Color color) {
-        Piece piece = new Piece(color);
+    public Piece createQueen(PlayerColor playerColor) {
+        Piece piece = new Piece(playerColor);
         piece.setStrategy(new QueenStrategy());
         return piece;
     }
 
-    public Piece createRook(Color color) {
-        Piece piece = new Piece(color);
+    public Piece createRook(PlayerColor playerColor) {
+        Piece piece = new Piece(playerColor);
         piece.setStrategy(new RookStrategy());
         return piece;
     }
 
-    public Piece createKnight(Color color) {
-        Piece piece = new Piece(color);
+    public Piece createKnight(PlayerColor playerColor) {
+        Piece piece = new Piece(playerColor);
         piece.setStrategy(new KnightStrategy());
         return piece;
     }
 
-    public Piece createBishop(Color color) {
-        Piece piece = new Piece(color);
+    public Piece createBishop(PlayerColor playerColor) {
+        Piece piece = new Piece(playerColor);
         piece.setStrategy(new BishopStrategy());
         return piece;
     }
 
-    public Piece createPawn(Color color) {
-        Piece piece = new Piece(color);
-        piece.setStrategy(new PawnStrategy(color));
+    public Piece createPawn(PlayerColor playerColor) {
+        Piece piece = new Piece(playerColor);
+        piece.setStrategy(new PawnStrategy(playerColor));
         return piece;
     }
 }
