@@ -3,7 +3,6 @@ package model;
 import model.piece.FactoryStrategy;
 import model.piece.Piece;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -108,5 +107,4 @@ public class Chessboard {
         for (MoveObserver moveObserver : moveObservers)
             moveObserver.afterMove(from, to);
     }
-
 }
