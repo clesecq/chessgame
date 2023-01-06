@@ -1,7 +1,7 @@
 package controller;
 
 /**
- * State of view of a case.
+ * State of view of a cell.
  */
 public enum CellState {
     DEFAULT,

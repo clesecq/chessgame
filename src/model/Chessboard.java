@@ -33,8 +33,8 @@ public class Chessboard {
             { 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },
             { 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-            { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+            { ' ', ' ', ' ', ' ', 'P', 'P', ' ', ' ' },
+            { ' ', ' ', ' ', 'p', 'p', ' ', ' ', ' ' },
             { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
             { 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
             { 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' },
@@ -98,29 +98,32 @@ public class Chessboard {
         int j = 0;
         Position[] positions = new Position[movements.length];
         for (int i = 0; i < movements.length; i++) {
-            // end of possible movements
-            if (movements[i] == null)
-                break;
-
             // begin of new chain, remove this position
-            if (movements[i][0] == -1 && movements[i][1] == -1) {
-                continue;
-            }
-
-            // get the potential position from board
-            Position potentialPosition = board[movements[i][0]][movements[i][1]];
-
-            // check if potential position is empty,
-            if (potentialPosition.getPiece() == null) {
-                positions[j++] = potentialPosition;
+            if (movements[i][0] < 0) {
+                // movement of pawn
+                //   -2: piece can only move if the position is empty
+                //   -3: piece can only move if the position is not empty
+                if (j < positions.length-1 && j > 0) {
+                    Piece p = positions[j-1].getPiece();
+                    if ((movements[i][1] == -2 && p != null) || (movements[i][1] == -3 && p == null))
+                        positions[--j] = null;
+                }
             } else {
-                // check if the piece can be captured
-                if (potentialPosition.getPiece().getPlayerColor() != piece.getPlayerColor())
-                    positions[j++] = potentialPosition;
+                // get the potential position from board
+                Position potentialPosition = board[movements[i][0]][movements[i][1]];
 
-                // search begin of next chain
-                while (i+1 < movements.length && !Arrays.equals(movements[i+1], new int[]{-1, -1}))
-                    i++;
+                // check if potential position is empty,
+                if (potentialPosition.getPiece() == null) {
+                    positions[j++] = potentialPosition;
+                } else {
+                    // check if the piece can be captured
+                    if (potentialPosition.getPiece().getPlayerColor() != piece.getPlayerColor())
+                        positions[j++] = potentialPosition;
+
+                    // search begin of next chain
+                    while (i+1 < movements.length && movements[i+1][0] >= 0)
+                        i++;
+                }
             }
         }
 
