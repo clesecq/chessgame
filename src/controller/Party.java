@@ -29,19 +29,26 @@ public class Party {
         return currentPlayer;
     }
 
-    public void clickOnCase(int x, int y) {
+    public void selectCase(int x, int y) {
         if (x < 0 || x > 7 || y < 0 || y > 7)
             throw new IllegalArgumentException("Invalid position");
 
         view.resetAllBackground();
 
-        if (previousPosition == null) {
+        if (previousPosition == null)
             selectPosition(chessboard.getBoard()[x][y]);
-        }
-        else {
-            boolean moved = movePiece(previousPosition, chessboard.getBoard()[x][y]);
-            if (moved) changePlayer();
-        }
+        else
+            previousPosition = null;
+    }
+
+    public void moveCase(int x, int y) {
+        if (x < 0 || x > 7 || y < 0 || y > 7)
+            throw new IllegalArgumentException("Invalid position");
+
+        view.resetAllBackground();
+
+        boolean moved = movePiece(previousPosition, chessboard.getBoard()[x][y]);
+        if (moved) changePlayer();
     }
 
     private boolean selectPosition(Position position) {
@@ -52,7 +59,7 @@ public class Party {
         Position[] movements = chessboard.getMovements(position);
 
         for (Position movement : movements)
-            view.getCase(movement).set(CaseState.POSSIBLE);
+            view.getCase(movement).setState(CaseState.POSSIBLE);
 
         return movements.length > 0;
     }
