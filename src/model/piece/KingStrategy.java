@@ -4,8 +4,8 @@ import model.Position;
 
 public class KingStrategy implements PieceStrategy {
     @Override
-    public Character getLetter() {
-        return 'K';
+    public String getName() {
+        return "king";
     }
 
     @Override

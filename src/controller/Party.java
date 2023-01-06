@@ -22,7 +22,7 @@ public class Party {
         for (Position[] lines : chessboard.getBoard())
             for (Position position : lines)
                 if (position.getPiece() != null)
-                    view.getCell(position).setPiece(position.getPiece().getLetter().toString());
+                    view.getCell(position).setPiece(position.getPiece().getName());
     }
 
     public PlayerColor getCurrentPlayer() {

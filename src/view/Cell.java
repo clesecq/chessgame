@@ -3,11 +3,15 @@ package view;
 import controller.Party;
 import controller.CellState;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Cell view of the chessboard.
@@ -23,14 +27,13 @@ public class Cell extends javax.swing.JLabel {
      */
     private CellState state = CellState.DEFAULT;
 
-    /**
-     * Current party. Used to transmit the click to the controller.
-     */
-    private Party party;
+    boolean isEmpty = true;
+    JLabel imgLabel = new JLabel();
 
 
     public Cell(Party party, int x, int y) {
-        this.party = party;
+        add(imgLabel);
+        imgLabel.setVisible(true);
 
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -42,7 +45,7 @@ public class Cell extends javax.swing.JLabel {
         });
 
         // Define default background color and set it
-        this.defaultColor = x % 2 == y % 2 ? Color.WHITE : Color.BLACK;
+        this.defaultColor = x % 2 == y % 2 ? Color.WHITE : new Color(0x8B4513);
         empty();
         setForeground(java.awt.Color.gray);
 
@@ -58,8 +61,14 @@ public class Cell extends javax.swing.JLabel {
      * @param piecePath Path of the piece image.
      */
     public void setPiece(String piecePath) {
-        // TODO: use image
-        setText(piecePath == null ? "" : piecePath);
+        try {
+            String path = "picture/" + piecePath + ".png";
+            URL url = getClass().getClassLoader().getResource(path);
+            BufferedImage img = ImageIO.read(url);
+            setIcon(new ImageIcon(img));
+        } catch (IOException e) {
+            System.exit(1);
+        }
     }
 
     /**
@@ -82,14 +91,14 @@ public class Cell extends javax.swing.JLabel {
      * @return True if the cell is empty, false otherwise.
      */
     public boolean isEmpty() {
-        return getText().equals("");
+        return getIcon() == null;
     }
 
     /**
      * Reset the cell state to default.
      */
     public void empty() {
-        setText(""); // remove symbol
+        setIcon(null); // remove symbol
         setState(CellState.DEFAULT); // restore default background color
     }
 }

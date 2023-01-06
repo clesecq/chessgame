@@ -28,7 +28,7 @@ public class MovementViewObserver implements MoveObserver {
      */
     @Override
     public void afterMove(Position oldPosition, Position newPosition) {
-        if (newPosition.getPiece().getLetter() == 'P' && newPosition.getRow() == 7 || newPosition.getPiece().getLetter() == 'P' && newPosition.getRow() == 0) {
+        if (newPosition.getPiece().getName().equals("pawn") && newPosition.getRow() == 7 || newPosition.getPiece().getName().equals("pawn") && newPosition.getRow() == 0) {
             System.out.println("Choisissez avec qui vous voulez switch entre la Reine 'Q', le Fou 'B', la Tour 'R' et le Cavalier 'N': \n");
             FactoryStrategy f = new FactoryStrategy();
             Piece piece = f.createRook(newPosition.getPiece().getPlayerColor());
@@ -44,8 +44,8 @@ public class MovementViewObserver implements MoveObserver {
             else if (nomPiece == 'N')
                 piece = f.createKnight(newPosition.getPiece().getPlayerColor());
             newPosition.setPiece(piece);
-            chessboardView.getCell(newPosition).setPiece(piece.getLetter().toString());
+            chessboardView.getCell(newPosition).setPiece(piece.getName());
         } else
-            chessboardView.getCell(newPosition).setPiece(newPosition.getPiece().getLetter().toString());
+            chessboardView.getCell(newPosition).setPiece(newPosition.getPiece().getName());
     }
 }

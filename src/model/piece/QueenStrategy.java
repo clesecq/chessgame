@@ -2,8 +2,8 @@ package model.piece;
 
 public class QueenStrategy implements PieceStrategy {
     @Override
-    public Character getLetter() {
-        return 'Q';
+    public String getName() {
+        return "queen";
     }
 
     @Override

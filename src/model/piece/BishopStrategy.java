@@ -2,8 +2,8 @@ package model.piece;
 public class BishopStrategy implements PieceStrategy {
 
     @Override
-    public Character getLetter() {
-        return 'B';
+    public String getName() {
+        return "bishop";
     }
 
     @Override
