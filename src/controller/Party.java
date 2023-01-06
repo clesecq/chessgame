@@ -7,7 +7,7 @@ public class Party {
     private Chessboard chessboard;
     private ChessboardView view;
 
-    private model.Color currentPlayer = model.Color.WHITE;
+    private PlayerColor currentPlayer = PlayerColor.WHITE;
 
     private Position previousPosition;
 
@@ -22,10 +22,10 @@ public class Party {
         for (Position[] lines : chessboard.getBoard())
             for (Position position : lines)
                 if (position.getPiece() != null)
-                    view.getCase(position).setPiece(position.getPiece().getLetter().toString());
+                    view.getCell(position).setPiece(position.getPiece().getLetter().toString());
     }
 
-    public model.Color getCurrentPlayer() {
+    public PlayerColor getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -52,14 +52,14 @@ public class Party {
     }
 
     private boolean selectPosition(Position position) {
-        if (position.getPiece() == null || position.getPiece().getColor() != currentPlayer)
+        if (position.getPiece() == null || position.getPiece().getPlayerColor() != currentPlayer)
             return false;
 
         previousPosition = position;
         Position[] movements = chessboard.getMovements(position);
 
         for (Position movement : movements)
-            view.getCase(movement).setState(CaseState.POSSIBLE);
+            view.getCell(movement).setState(CellState.POSSIBLE);
 
         return movements.length > 0;
     }
@@ -71,6 +71,6 @@ public class Party {
     }
 
     private void changePlayer() {
-        currentPlayer = currentPlayer == model.Color.WHITE ? model.Color.BLACK : model.Color.WHITE;
+        currentPlayer = currentPlayer == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
     }
 }

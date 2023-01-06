@@ -1,8 +1,5 @@
 package model.piece;
 
-import model.Color;
-import model.Position;
-
 public class KnightStrategy implements PieceStrategy {
     @Override
     public Character getLetter() {

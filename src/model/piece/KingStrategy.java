@@ -9,8 +9,9 @@ public class KingStrategy implements PieceStrategy {
     }
 
     @Override
-    public Integer getPoints() throws Exception {
-         throw new Exception("Le roi ne peut mourir");
+    public Integer getPoints() {
+        // is imposible to get the points of a king
+         return Integer.MIN_VALUE;
     }
 
     @Override

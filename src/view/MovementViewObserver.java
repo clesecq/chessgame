@@ -1,6 +1,5 @@
 package view;
 
-import controller.CaseState;
 import model.MoveObserver;
 import model.Position;
 
@@ -11,13 +10,20 @@ public class MovementViewObserver implements MoveObserver {
         this.chessboardView = chessboardView;
     }
 
+    /**
+     * Empty the cell of the old position.
+     */
     @Override
     public void beforeMove(Position oldPosition, Position newPosition) {
-        chessboardView.getCase(oldPosition).empty();
+        chessboardView.getCell(oldPosition).empty();
     }
 
+    /**
+     * Set the piece in the new position.
+     */
     @Override
     public void afterMove(Position oldPosition, Position newPosition) {
-        chessboardView.getCase(newPosition).setPiece(newPosition.getPiece().getLetter().toString());
+        // TODO: use the piece's image instead of the piece's letter
+        chessboardView.getCell(newPosition).setPiece(newPosition.getPiece().getLetter().toString());
     }
 }
